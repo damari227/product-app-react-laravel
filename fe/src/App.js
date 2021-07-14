@@ -12,7 +12,8 @@ const App = () => {
       <Navbar />
       <div className="container mt-5">
         <Route path="/" exact component={Home} />
-        <Route path="/create" exact component={Form} />
+        <Route path="/create" component={Form} />
+        <Route path="/product/:id" component={Form} />
         <Route path="/about" component={About} />
       </div>
     </Router>

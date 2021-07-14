@@ -20,7 +20,15 @@ class ProductController extends Controller
         ]);
     }
 
+    public function update($id, Request $request){
+        Product::find($id)->update($request->all());
+    }
+
     public function destroy($id){
         Product::find($id)->delete();
+    }
+
+    public function show($id){
+        return Product::find($id);
     }
 }

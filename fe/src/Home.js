@@ -1,33 +1,32 @@
 import react, { Component } from "react";
 import { NavLink } from "react-router-dom";
-import Navbar from "./Navbar";
 import axios from "axios";
 
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      products: []
-    }
+      products: [],
+    };
   }
 
   componentDidMount = () => {
     this.getProducts();
-  }
+  };
 
   getProducts = () => {
     axios.get("http://localhost:8000/api/products").then((response) => {
       const products = response.data;
       this.setState({ products });
     });
-  }
+  };
 
   delete = (event) => {
     const id = event.target.getAttribute("data-id");
     axios.post("http://localhost:8000/api/products/delete/" + id).then(() => {
       this.getProducts();
     });
-  }
+  };
 
   render = () => {
     return (
@@ -55,6 +54,13 @@ class Home extends Component {
                     <td>{product.nama}</td>
                     <td>{product.harga}</td>
                     <td>
+                      <NavLink to={ "/product/"+product.id }>
+                        <button
+                          className="btn btn-info"
+                        >
+                          Update
+                        </button>
+                      </NavLink>
                       <button
                         className="btn btn-danger"
                         data-id={product.id}
@@ -71,7 +77,7 @@ class Home extends Component {
         </div>
       </div>
     );
-  }
+  };
 }
 
 export default Home;

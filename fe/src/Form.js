@@ -1,18 +1,48 @@
 import React, { Component } from "react";
 import axios from 'axios';
+import { useParams } from "react-router-dom";
 
+function Id(){
+  const { id } = useParams();
+
+  return (
+    <Form productId={id} />
+  )
+}
 
 class Form extends Component {
 
-    submit(){
+    submit = () => {
         const nama = document.querySelector('input[name=nama]').value;
         const harga = document.querySelector('input[name=harga]').value;
-        axios.post('http://localhost:8000/api/products', {
+        let url;
+        if(this.props.productId){
+          url = 'http://localhost:8000/api/product/' + this.props.productId;
+        } else {
+          url = 'http://localhost:8000/api/products';
+        }
+
+        axios.post(url, {
             nama,
             harga
         }).then((response) => {
             console.log(response.data);
         });
+    }
+
+    componentDidMount = () => {
+      const id = this.props.productId;
+      if (id){
+        this.getProduct(id);
+      }
+    }
+
+    getProduct(id){
+      axios.get('http://localhost:8000/api/product/' + id).then((response) => {
+        const product = response.data;
+        document.querySelector('input[name=nama]').value = product.nama;
+        document.querySelector('input[name=harga]').value = product.harga;
+      });
     }
 
   render() {
@@ -41,4 +71,4 @@ class Form extends Component {
   }
 }
 
-export default Form;
+export default Id;
