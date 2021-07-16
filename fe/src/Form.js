@@ -22,9 +22,10 @@ class Form extends Component {
           url = 'http://localhost:8000/api/products';
         }
 
-        axios.post(url, {
-            nama,
-            harga
+        axios.post(url, {nama,harga}, {
+          headers: {
+            Authorization: 'Bearer ' + localStorage.token
+          }
         }).then((response) => {
             console.log(response.data);
         });
@@ -38,8 +39,13 @@ class Form extends Component {
     }
 
     getProduct(id){
-      axios.get('http://localhost:8000/api/product/' + id).then((response) => {
+      axios.get('http://localhost:8000/api/product/' + id, {
+        headers: {
+          Authorization: 'Bearer ' + localStorage.token
+        }
+      }).then((response) => {
         const product = response.data;
+        console.log(product);
         document.querySelector('input[name=nama]').value = product.nama;
         document.querySelector('input[name=harga]').value = product.harga;
       });

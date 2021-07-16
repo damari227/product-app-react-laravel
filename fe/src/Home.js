@@ -15,7 +15,11 @@ class Home extends Component {
   };
 
   getProducts = () => {
-    axios.get("http://localhost:8000/api/products").then((response) => {
+    axios.get("http://localhost:8000/api/products", {
+      headers: {
+        'Authorization' : 'Bearer '+ localStorage.token
+      }
+    }).then((response) => {
       const products = response.data;
       this.setState({ products });
     });
@@ -23,7 +27,11 @@ class Home extends Component {
 
   delete = (event) => {
     const id = event.target.getAttribute("data-id");
-    axios.post("http://localhost:8000/api/products/delete/" + id).then(() => {
+    axios.post("http://localhost:8000/api/products/delete/" + id, {}, {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.token
+      }
+    }).then(() => {
       this.getProducts();
     });
   };
@@ -49,7 +57,7 @@ class Home extends Component {
               </thead>
               <tbody>
                 {this.state.products.map((product, i) => (
-                  <tr>
+                  <tr key={ i }>
                     <td>{i + 1}</td>
                     <td>{product.nama}</td>
                     <td>{product.harga}</td>
